@@ -1,0 +1,145 @@
+version: "3.8"
+
+services:
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb
+    image: mariadb:inception
+    networks: # attach this container to inception network (--network inception)
+      - inception
+    volumes:
+      - type: volume
+        source: mariadb
+        target: /var/lib/mysql
+    env_file:
+      - .env
+    restart: always
+  wordpress:
+    container_name: wordpress
+    build: ./requirements/wordpress
+    image: wordpress:inception
+    networks: # attach this container to inception network (--network inception)
+      - inception
+    volumes:
+      - type: volume
+        source: wordpress
+        target: /var/www/inception
+    depends_on:
+      - mariadb
+      - redis
+    env_file:
+      - .env
+    restart: always
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    image: nginx:inception
+    ports:
+      - target: 443
+        published: 443
+    networks: # attach this container to inception network (--network inception)
+      - inception
+    volumes:
+      - type: volume
+        source: wordpress
+        target: /var/www/inception
+    depends_on:
+      - wordpress
+    env_file:
+      - .env
+    restart: always
+  redis:
+    container_name: redis
+    build: ./requirements/bonus/redis
+    image: redis:inception
+    # ports:
+    #   - target: 6379
+    #     published: 6379
+    networks: # attach this container to inception network (--network inception)
+      - inception
+    env_file:
+      - .env
+    restart: always
+  adminer:
+    container_name: adminer
+    build: ./requirements/bonus/adminer
+    image: adminer:inception
+    ports:
+      - target: 81
+        published: 8000
+    networks: # attach this container to inception network (--network inception)
+      - inception
+    env_file:
+      - .env
+    restart: always
+  ftp:
+    container_name: ftp
+    build: ./requirements/bonus/ftp
+    image: ftp:inception
+    ports:
+      - 40000-40100:40000-40100
+      - target: 21
+        published: 21
+    networks: # attach this container to inception network (--network inception)
+      - inception
+    volumes:
+      - type: volume
+        source: wordpress
+        target: /home/newuser
+    depends_on:
+      - wordpress
+    env_file:
+      - .env
+    restart: always
+  portainer:
+    container_name: portainer
+    build: ./requirements/bonus/portainer
+    image: portainer:inception
+    ports:
+      - target: 9000
+        published: 9001
+    networks: # attach this container to inception network (--network inception)
+      - inception
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    env_file:
+      - .env
+    restart: always
+  static_website:
+    container_name: static_website
+    build: ./requirements/bonus/static_website
+    image: static_website:inception
+    ports:
+      - target: 8080
+        published: 8080
+    networks: # attach this container to inception network (--network inception)
+      - inception
+    restart: always
+
+# docker volume create DB
+# docker volume create WordPress
+volumes:
+  mariadb:
+    name: mariadb
+    driver: local
+    driver_opts:
+        type: none
+        o: bind
+        device: /home/mel-aini/data/mariadb
+  
+  wordpress:
+    name: wordpress
+    driver: local
+    driver_opts:
+        type: none
+        o: bind
+        device: /home/mel-aini/data/wordpress
+
+# docker network create inception
+networks:
+  inception:
+    name: inception
+
+# test networking
+# -> docker exec "container id" ping -c 1 "target container name/id"
+# -> docker-compose exec "service name" ping -c 1 "target service name"
