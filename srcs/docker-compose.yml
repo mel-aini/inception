@@ -91,13 +91,13 @@ services:
     env_file:
       - .env
     restart: always
-  portainer:
-    container_name: portainer
-    build: ./requirements/bonus/portainer
-    image: portainer:inception
+  cadvisor:
+    container_name: cadvisor
+    build: ./requirements/bonus/cadvisor
+    image: cadvisor:inception
     ports:
-      - target: 9000
-        published: 9001
+      - target: 8083
+        published: 8083
     networks: # attach this container to inception network (--network inception)
       - inception
     volumes:
