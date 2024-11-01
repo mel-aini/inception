@@ -12,4 +12,3 @@ EXPOSE 8083
 ENTRYPOINT [ "/usr/local/bin/cadvisor" ]
 
 CMD [ "--port=8083" ]
-

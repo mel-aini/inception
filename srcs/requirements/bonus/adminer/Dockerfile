@@ -10,10 +10,3 @@ RUN chmod 755 /var/www/html/adminer.php
 RUN sed -i "s/Listen 80/Listen 81/" /etc/apache2/ports.conf
 
 CMD apachectl -DFOREGROUND
-
-###### helpfull tools ######
-# docker build -t adminer .
-# docker run -d --name adminer -p 8000:80 adminer
-# docker exec -it adminer bash
-# docker container stop adminer && docker container rm adminer
-# docker container rm -f $(docker container ls -q)

@@ -13,14 +13,3 @@ mariadb-admin -p$MYSQL_ROOT_PASSWORD shutdown
 sed -i "s/127.0.0.1/0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf
 
 mariadbd
-
-# sleep infinity
-
-###### helpfull tools ######
-# show certificate details: openssl x509 -in nginx-selfsigned.crt -noout -text
-# docker build -t mariadb .
-# docker build -t mariadb --no-cache .
-# --no-cache
-# docker run -d --name mariadb mariadb
-# docker exec -it mariadb1 bash
-# docker container stop mariadb1 && docker container rm mariadb1
