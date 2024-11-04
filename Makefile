@@ -1,17 +1,20 @@
 
 file = ./srcs/docker-compose.yml
 
-all:
+all: pre
 	docker compose -f $(file) up --build
 
-run:
+pre:
+	mkdir -p /home/mel-aini/data/mariadb /home/mel-aini/data/wordpress
+
+run: pre
 	docker compose -f $(file) up
 
 vclean:
 	sudo rm -rf /home/mel-aini/data/mariadb/*
 	sudo rm -rf /home/mel-aini/data/wordpress/*
 
-no_cache:
+no_cache: pre
 	docker compose -f $(file) build --no-cache
 	docker compose -f $(file) up
 

@@ -9,4 +9,6 @@ RUN chown -R www-data:www-data /var/www/html/adminer.php
 RUN chmod 755 /var/www/html/adminer.php
 RUN sed -i "s/Listen 80/Listen 81/" /etc/apache2/ports.conf
 
+EXPOSE 8000
+
 CMD apachectl -DFOREGROUND
