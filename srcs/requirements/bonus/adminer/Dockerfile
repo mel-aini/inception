@@ -1,7 +1,7 @@
 FROM debian:bullseye
 
 RUN apt-get update -y
-RUN apt-get install -y wget apache2 php libapache2-mod-php php-curl php-cli php-mysql php-gd
+RUN apt-get install -y wget apache2 php libapache2-mod-php php-mysql
 
 RUN wget "http://www.adminer.org/latest.php" -O /var/www/html/adminer.php
 

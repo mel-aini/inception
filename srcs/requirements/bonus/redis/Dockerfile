@@ -1,7 +1,7 @@
 FROM debian:bullseye
 
 RUN apt update
-RUN apt install -y redis iproute2
+RUN apt install -y redis
 
 RUN sed -i 's/bind 127.0.0.1/bind 0.0.0.0/' /etc/redis/redis.conf
 

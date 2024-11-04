@@ -1,7 +1,6 @@
 FROM debian:bullseye
 
 RUN apt update -y
-RUN apt install -y curl
 RUN apt install -y nginx
 
 WORKDIR /var/www/static_website
